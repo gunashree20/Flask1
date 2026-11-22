@@ -1,0 +1,131 @@
+
+{% extends "base.html" %}
+
+{% block title %}Students | MEVI{% endblock %}
+{% block heading %}Student Management{% endblock %}
+
+{% block content %}
+
+<div class="welcome-section">
+    <div>
+        <h1>Student Management</h1>
+        <p>Add, view and manage student records.</p>
+    </div>
+</div>
+
+<div class="content-card">
+
+    <div class="section-header">
+        <div>
+            <h2>Register New Student</h2>
+            <p>Enter the student information below.</p>
+        </div>
+    </div>
+
+    <form action="{{ url_for('add_student') }}"
+          method="POST"
+          class="student-form">
+
+        <div class="form-group">
+            <label>Student Name</label>
+            <input type="text"
+                   name="name"
+                   placeholder="Enter student name"
+                   maxlength="100"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Email Address</label>
+            <input type="email"
+                   name="email"
+                   placeholder="student@example.com"
+                   maxlength="254"
+                   required>
+        </div>
+
+        <div class="form-group">
+            <label>Course</label>
+            <select name="course" required>
+                <option value="">Select course</option>
+                <option value="MCA">MCA</option>
+                <option value="MBA">MBA</option>
+                <option value="BCA">BCA</option>
+                <option value="B.Tech">B.Tech</option>
+                <option value="Data Science">Data Science</option>
+            </select>
+        </div>
+
+        <button type="submit" class="primary-btn">
+            + Register Student
+        </button>
+
+    </form>
+
+</div>
+
+<div class="content-card">
+
+    <div class="section-header">
+        <div>
+            <h2>Registered Students</h2>
+            <p>All student records in the database</p>
+        </div>
+
+        <span class="course-tag">
+            Total: {{ students|length }}
+        </span>
+    </div>
+
+    {% if students %}
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>#{{ student.id }}</td>
+                    <td><strong>{{ student.name }}</strong></td>
+                    <td>{{ student.email }}</td>
+                    <td>
+                        <span class="course-tag">{{ student.course }}</span>
+                    </td>
+                    <td>
+                        <form method="POST"
+                              action="{{ url_for('delete_student', student_id=student.id) }}"
+                              onsubmit="return confirm('Delete this student?');">
+
+                            <button type="submit" class="delete-btn">
+                                Delete
+                            </button>
+
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        <h3>No student records found</h3>
+        <p>Use the form above to register your first student.</p>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

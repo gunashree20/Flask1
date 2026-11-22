@@ -1,0 +1,98 @@
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard | MEVI{% endblock %}
+{% block heading %}Dashboard Overview{% endblock %}
+
+{% block content %}
+
+<div class="welcome-section">
+    <div>
+        <h1>Welcome to MEVI Portal 👋</h1>
+        <p>Manage your students and academic records in one place.</p>
+    </div>
+
+    <a href="{{ url_for('students') }}" class="primary-btn">
+        + Add Student
+    </a>
+</div>
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+        <div class="stat-icon blue">♙</div>
+        <p>Total Students</p>
+        <h2>{{ total_students }}</h2>
+        <small>Registered students</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon purple">▣</div>
+        <p>Active Courses</p>
+        <h2>{{ total_courses }}</h2>
+        <small>Courses represented</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon green">✓</div>
+        <p>Portal Status</p>
+        <h2>Active</h2>
+        <small>Flask application running</small>
+    </div>
+
+</div>
+
+<div class="content-card">
+
+    <div class="section-header">
+        <div>
+            <h2>Recently Added Students</h2>
+            <p>Latest student registrations</p>
+        </div>
+
+        <a href="{{ url_for('students') }}" class="text-link">
+            View All →
+        </a>
+    </div>
+
+    {% if recent_students %}
+
+    <div class="table-wrapper">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Student Name</th>
+                    <th>Email</th>
+                    <th>Course</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for student in recent_students %}
+                <tr>
+                    <td>#{{ student.id }}</td>
+                    <td><strong>{{ student.name }}</strong></td>
+                    <td>{{ student.email }}</td>
+                    <td><span class="course-tag">{{ student.course }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+        <h3>No students registered yet</h3>
+        <p>Add your first student to get started.</p>
+        <a href="{{ url_for('students') }}" class="primary-btn">
+            Add First Student
+        </a>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}
